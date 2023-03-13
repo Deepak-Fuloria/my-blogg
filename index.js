@@ -11,7 +11,8 @@ const path = require("path");
 
 dotenv.config();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "./client/build")));
+
 // app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
@@ -26,7 +27,7 @@ mongoose
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../client/build");
+    cb(null, "./client/build");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
