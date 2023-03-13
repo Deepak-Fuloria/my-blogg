@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, "./client/build")));
 // app.post("/api/upload", upload.single("file"), (req, res) => {
 //   res.status(200).json("File has been uploaded");
 // });
-app.get("/api/test/mytest",(req,res)=>{
+app.get("/test/mytest",(req,res)=>{
   res.send("test function from back end")
 })
 // app.use("/api/auth", authRoute);
