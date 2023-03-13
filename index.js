@@ -11,7 +11,7 @@ const path = require("path");
 
 dotenv.config();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "./client/build")));
+app.use(express.static(path.join(__dirname, "../client/build")));
 // app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
@@ -26,7 +26,7 @@ mongoose
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "../client/build");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
@@ -48,3 +48,20 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`app is runing on ${PORT}`);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
