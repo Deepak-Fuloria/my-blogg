@@ -69,6 +69,7 @@ router.get("/:id", async (req, res) => {
 
 //GET ALL POSTS
 router.get("/", async (req, res) => {
+  console.log("reached here","on the top")
   const username = req.query.user;
   const catName = req.query.cat;
   try {
@@ -83,6 +84,8 @@ router.get("/", async (req, res) => {
       });
     } else {
       posts = await Post.find();
+      console.log("🚀 ~ file: posts.js:87 ~ router.get ~ posts:", posts)
+      
     }
     res.status(200).json(posts);
   } catch (err) {
