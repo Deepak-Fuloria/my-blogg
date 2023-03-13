@@ -15,29 +15,29 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "./client/build")));
 // app.use("/images", express.static(path.join(__dirname, "/images")));
 
-// mongoose
-//   .connect(process.env.MONGO_URL, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useCreateIndex: true,
-//     useFindAndModify:true
-//   })
-//   .then(console.log("Connected to MongoDB"))
-//   .catch((err) => console.log(err));
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify:true
+  })
+  .then(console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./client/build");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, req.body.name);
-//   },
-// });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./client/build");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
 
-// const upload = multer({ storage: storage });
-// app.post("/api/upload", upload.single("file"), (req, res) => {
-//   res.status(200).json("File has been uploaded");
-// });
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  res.status(200).json("File has been uploaded");
+});
 app.get("/test/mytest",(req,res)=>{
   res.send("test function from back end")
 })
