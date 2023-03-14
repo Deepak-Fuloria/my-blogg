@@ -25,9 +25,10 @@ mongoose
   .catch((err) => console.log(err));
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./client/build");
-  },
+  destination: './client/build',
+  // destination: (req, file, cb) => {
+  //   cb(null, "./client/build");
+  // },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
   },
