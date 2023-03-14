@@ -8,13 +8,12 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
-var cors = require('cors')
+const cors=require("cors")
 app.use(cors())
 dotenv.config();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "./client/build")));
 // app.use("/images", express.static(path.join(__dirname, "/images")));
-
+app.use(express.static(path.join(__dirname, "./client/build")));
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -27,7 +26,7 @@ mongoose
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./client/build");
+    cb(null, "images");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
@@ -38,16 +37,20 @@ const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
 });
-app.get("/test/mytest",(req,res)=>{
-  res.send("test function from back end")
-})
-app.use("/auth", authRoute);
-app.use("/users", userRoute);
-app.use("/posts", postRoute);
-app.use("/categories", categoryRoute);
 
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
+app.use("/api/categories", categoryRoute);
+
+// app.use("/auth", authRoute);
+// app.use("/users", userRoute);
+// app.use("/posts", postRoute);
+// app.use("/categories", categoryRoute);
+
+//  ---------------------------------------------
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`app is runing on ${PORT}`);
-});
+})
