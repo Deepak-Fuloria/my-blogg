@@ -14,6 +14,8 @@ dotenv.config();
 app.use(express.json());
 // app.use("/images", express.static(path.join(__dirname, "/images")));
 app.use(express.static(path.join(__dirname, "./client/build")));
+
+
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -24,37 +26,48 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.resolve(__dirname, '/client/build'))
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-    }
-  })
-
-const upload = multer({ storage: storage });
-app.post("/upload", upload.single("file"), (req, res) => {
-  res.status(200).json("File has been uploaded");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./client/build");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
 });
 
-app.get("/test", (req, res) => {
-  res.send("data from backend")
-});
+const uploadImage = async (req, res, next) => {
+  var form = new formidable.IncomingForm();
+  form.parse(req, async (err, fields, files) => {
+    var oldpath = files.file.filepath;
+    const newPath =
+      path.join(__dirname, "./client/build/") + fields.name
+        console.log("reached here",newPath)
+    fs.rename(oldpath, newPath, function (err) {
+      if (err) throw err;
+      res.send("file uploaded succesfully")
+    });
+  });
+};
 
+
+
+app.post("/upload",uploadImage);
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
 app.use("/posts", postRoute);
 app.use("/categories", categoryRoute);
 
-// app.use("/auth", authRoute);
-// app.use("/users", userRoute);
-// app.use("/posts", postRoute);
-// app.use("/categories", categoryRoute);
 
-//  ---------------------------------------------
+
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`app is runing on ${PORT}`);
 })
+
+
+
+
+
+
