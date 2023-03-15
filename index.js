@@ -5,17 +5,18 @@ const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
+
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
+const formidable = require('formidable');
 const path = require("path");
-const cors=require("cors")
-app.use(cors())
+var cors = require('cors')
+const fs=require("fs")
 dotenv.config();
 app.use(express.json());
-// app.use("/images", express.static(path.join(__dirname, "/images")));
 app.use(express.static(path.join(__dirname, "./client/build")));
 
-
+app.use(cors())
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -41,7 +42,7 @@ const uploadImage = async (req, res, next) => {
     var oldpath = files.file.filepath;
     const newPath =
       path.join(__dirname, "./client/build/") + fields.name
-        console.log("reached here",newPath)
+       console.log("reached here",newPath)
     fs.rename(oldpath, newPath, function (err) {
       if (err) throw err;
       res.send("file uploaded succesfully")
@@ -58,16 +59,8 @@ app.use("/posts", postRoute);
 app.use("/categories", categoryRoute);
 
 
-
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`app is runing on ${PORT}`);
-})
-
-
-
-
-
-
+});
